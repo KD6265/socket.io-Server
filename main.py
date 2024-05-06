@@ -8,6 +8,8 @@ from sqlalchemy import create_engine,text
 from sqlalchemy.engine import URL
 from sqlalchemy.orm import sessionmaker
 
+from dotenv import  load_dotenv
+import os 
 # for sqlalchemy-aiohttp
 from sqlalchemy.ext.asyncio import create_async_engine,AsyncSession
     
@@ -15,11 +17,11 @@ from sqlalchemy.ext.asyncio import create_async_engine,AsyncSession
 sio_server = socketio.AsyncServer(cors_allowed_origins=[], async_mode="asgi")
 
 sio_app = socketio.ASGIApp(sio_server, socketio_path='sockets')
+load_dotenv()
 
-#database connection
-engine = create_async_engine(URL.create(
-    drivername="postgresql+asyncpg",username="postgres",password="Kd1606",host="localhost",port="7000",database="demodb"
-) )
+database_url = os.getenv("DATABASE_URL")
+print("url :",database_url)
+engine = create_async_engine(database_url)
 async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 app = FastAPI()

@@ -1,17 +1,32 @@
-from sqlalchemy import create_engine, Column, Integer, String, DateTime
+import os
+import asyncio
+from dotenv import load_dotenv
+from sqlalchemy import create_engine, Column, Integer
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy_utils import database_exists, create_database
-from sqlalchemy.orm import declarative_base
+load_dotenv()
 
-from sqlalchemy.orm import sessionmaker
+# Example: DATABASE_URL="postgresql+asyncpg://username:password@localhost:5432/database_name"
+DATABASE_URL = os.getenv("DATABASE_URL")
+print('Database url : ', DATABASE_URL)
 
-engine = create_engine("postgresql://postgres:Kd1606@localhost:7000/demodb")
-if not database_exists(engine.url):
-    create_database(engine.url)
-    print('database created')
-else:
-    print('database already exists')
-
-print("database exists:", database_exists(engine.url))
+#create db  
+# async def create_db():
+#     if await database_exists(DATABASE_URL):
+#         print("Database exists!")
+#     else:
+#         print("Database does not exist.")
+#         await create_database(DATABASE_URL) 
+# async def create_db():
+#     async_engine = create_async_engine(DATABASE_URL, echo=True, future=True)
+#     async with async_engine.connect() as conn:
+#         if not await conn.run_sync(database_exists(async_engine.url)):
+#             await conn.run_sync( create_database(DATABASE_URL))
+#             print('database created')
+#         else:
+#             print('database already exists')
+async_engine = create_async_engine(DATABASE_URL, echo=True, future=True)
 
 Base = declarative_base()
 
@@ -23,11 +38,22 @@ class demotb(Base):
     bottom = Column(Integer)
     left = Column(Integer)
     right = Column(Integer)
-    
-Base.metadata.create_all(engine)
+async def create_tables():
+    async with async_engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
-# Step 5: Insert data into the database
-Session = sessionmaker(bind=engine,autocommit=False, autoflush=False,)
 
+async def main():
+    # await create_db()
+    await create_tables()
+
+
+asyncio.run(main())
+
+SessionLocal = sessionmaker(bind=async_engine, class_=AsyncSession, expire_on_commit=False)
+# Create a session
+async def get_session():
+    async with SessionLocal() as session:
+        yield session
 
 print("Tables created successfully")
