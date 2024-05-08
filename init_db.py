@@ -36,7 +36,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 #             print('database created')
 #         else:
 #             print('database already exists')
-async_engine = create_async_engine(DATABASE_URL, echo=True, future=True, dialect_name='asyncpg')
+async_engine = create_async_engine(DATABASE_URL, echo=True, future=True,  dialect="postgresql+asyncpg")
 
 Base = declarative_base()
 metadata = MetaData()
