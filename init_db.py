@@ -36,7 +36,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 #             print('database created')
 #         else:
 #             print('database already exists')
-async_engine = create_async_engine(DATABASE_URL, echo=True, future=True)
+async_engine = create_async_engine(DATABASE_URL, echo=True, future=True, driver='asyncpg')
 
 Base = declarative_base()
 metadata = MetaData()
@@ -62,7 +62,7 @@ async def main():
     print("Tables created successfully")
 asyncio.run(main())
  
-SessionLocal = sessionmaker(bind=async_engine, class_=AsyncSession, expire_on_commit=False)
+SessionLocal = sessionmaker(bind=async_engine, class_=AsyncSession, expire_on_commit=False,)
 # Create a session
 async def get_session():
     async with SessionLocal() as session:
