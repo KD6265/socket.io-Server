@@ -65,8 +65,11 @@ async def start_program(sid):
         await sio_server.emit('message', {'message': 'Program is completed'}, room=sid)
     except Exception as e:
         print(f"Error starting program: {e}")
+async def main():
+    print("Starting server...")
+    await uvicorn.run('main:app', host="127.0.0.1", port=8000, reload=True)
 
 if __name__ == '__main__':
-    print("Starting server...")
-    uvicorn.run('main:app', host="127.0.0.1", port=8000, reload=True)
-uvicorn.run('main:app', host="127.0.0.1", port=8000, reload=True)
+    import asyncio
+    # uvicorn.run('main:app', host="127.0.0.1", port=8000, reload=True)
+    asyncio.run(main())
