@@ -1,7 +1,7 @@
 import os
 import asyncio
 from dotenv import load_dotenv
-from sqlalchemy import create_engine, Column, Integer
+from sqlalchemy import create_engine, Column, Integer,String,MetaData
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy_utils import database_exists, create_database
@@ -29,6 +29,9 @@ print('Database url : ', DATABASE_URL)
 async_engine = create_async_engine(DATABASE_URL, echo=True, future=True)
 
 Base = declarative_base()
+metadata = MetaData()
+Base.metadata = metadata
+print("metadata : " , metadata)
 
 class demotb(Base):
     __tablename__ = 'demotb'
@@ -46,14 +49,12 @@ async def create_tables():
 async def main():
     # await create_db()
     await create_tables()
-
-
+    print("Tables created successfully")
 asyncio.run(main())
-
+ 
 SessionLocal = sessionmaker(bind=async_engine, class_=AsyncSession, expire_on_commit=False)
 # Create a session
 async def get_session():
     async with SessionLocal() as session:
         yield session
 
-print("Tables created successfully")
