@@ -6,11 +6,21 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy_utils import database_exists, create_database
 load_dotenv()
+import dj_database_url
 
 # Example: DATABASE_URL="postgresql+asyncpg://username:password@localhost:5432/database_name"
-DATABASE_URL = os.getenv("DATABASE_URL")
-print('Database url : ', DATABASE_URL)
 
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+# DATABASE_URL =  dj_database_url.config(
+#         # Replace this value with your local database's connection string.
+#         default=os.getenv("DATABASE_URL"),
+#         conn_max_age=600
+#     )
+# print('Database url : ', DATABASE_URL)
+
+# if DATABASE_URL.startswith("postgresql+asyncpg"):
+#     DATABASE_URL = DATABASE_URL.replace("postgresql+asyncpg", "postgres")
 #create db  
 # async def create_db():
 #     if await database_exists(DATABASE_URL):
