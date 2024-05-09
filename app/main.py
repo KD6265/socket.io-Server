@@ -72,7 +72,7 @@ async def start_program(sid):
 def main():
     try:
         print("Starting server...")
-        uvicorn.run('main:app', host="44.225.181.72", port=8000, reload=True)
+        uvicorn.run('main:app', host="0.0.0.0", port=8000, reload=True)
     except Exception as e:
         logging.error(f'An error occurred in server start : {e}')
         print(f"An error occurred: {e}")
