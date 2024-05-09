@@ -7,6 +7,7 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy_utils import database_exists, create_database
 load_dotenv()
 import dj_database_url
+import asyncpg
 
 # Example: DATABASE_URL="postgresql+asyncpg://username:password@localhost:5432/database_name"
 
@@ -36,7 +37,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 #             print('database created')
 #         else:
 #             print('database already exists')
-async_engine = create_async_engine(DATABASE_URL, echo=True, future=True,  dialect="postgresql+asyncpg")
+async_engine = create_async_engine(DATABASE_URL, echo=True, future=True, )
 
 Base = declarative_base()
 metadata = MetaData()
