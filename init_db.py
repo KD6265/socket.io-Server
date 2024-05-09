@@ -37,7 +37,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 #             print('database created')
 #         else:
 #             print('database already exists')
-async_engine = create_async_engine(DATABASE_URL, echo=True, future=True, )
+async_engine = create_async_engine(DATABASE_URL, echo=True, future=True,)
 
 Base = declarative_base()
 metadata = MetaData()
