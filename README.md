@@ -23,18 +23,22 @@ for activate the virtual environment
 2.Install the required Python packages:
 ```pip install -r requirements.txt```
 
-3.Create database and table
+3.Create a .env file:
+
+```DATABASE_URL="postgresql+asyncpg://username:password@localhost:5432/database_name"```
+
+Note: Change username,password,port according to your database in URL
+
+4.Create database and table
 
 ```python init_db.py```
 
-Note: Change password according to your  database in  init_db
-
-4.Run the main server:
+5.Run the main server:
 
 ```python main.py```
 or
 ```uvicorn main:app --reload```
 
-5.Run the client:
+6.Run the client:
 
 ```python client.py```

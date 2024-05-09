@@ -5,14 +5,14 @@ from sqlalchemy import create_engine, Column, Integer,String,MetaData
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy_utils import database_exists, create_database
-load_dotenv()
-import dj_database_url
 import asyncpg
+load_dotenv()
 
 # Example: DATABASE_URL="postgresql+asyncpg://username:password@localhost:5432/database_name"
 
 
 DATABASE_URL = os.getenv("DATABASE_URL")
+
 # DATABASE_URL =  dj_database_url.config(
 #         # Replace this value with your local database's connection string.
 #         default=os.getenv("DATABASE_URL"),

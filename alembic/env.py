@@ -19,7 +19,9 @@ if config.config_file_name is not None:
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 from  init_db  import  Base
+print("env.py call")
 target_metadata = Base.metadata
+print(target_metadata)
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -40,8 +42,11 @@ async def run_migrations_offline() -> None:
 
     """
     url = config.get_main_option("sqlalchemy.url")
+    print("url_almbic: ",url)
     context.configure(
+        compare_type=True,
         url=url,
+        include_schemas=True,
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
@@ -62,6 +67,8 @@ async def run_migrations_online() -> None:
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
+        compare_type=True,
+        include_schemas=True
     )
 
     async with connectable.connect() as connection:

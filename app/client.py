@@ -24,9 +24,9 @@ async def message(data: dict):
     print(f"{message}")
 
 async def main():
-    # await sio_client.connect(url='http://127.0.0.1:8000', socketio_path='sockets')
-    url = "https://socket-io-server-c6zq.onrender.com"  # Your Render custom domain
-    await sio_client.connect(url, socketio_path='/sockets')
+    await sio_client.connect(url='http://127.0.0.1:8000', socketio_path='sockets')
+    # url = "https://socket-io-server-c6zq.onrender.com"  # Your Render custom domain
+    # await sio_client.connect(url, socketio_path='/sockets')
     await asyncio.sleep(1)  # add this line to give the connection time to establish
     await sio_client.disconnect()
 if __name__ == '__main__':

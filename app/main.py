@@ -3,9 +3,8 @@ import sys
 from pathlib import Path
 import logging
 
-# Add the parent directory to the Python path
+
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-# from ..models import User
 BASE_DIR = Path(__file__).resolve().parent.parent
 print("Base directory:", BASE_DIR)
 
@@ -53,7 +52,7 @@ async def update_database():
             await session.execute(stmt)
             await session.commit()
             await session.close()
-        print("database updated" )
+            print("database updated" )
     except psycopg2.Error as e:
         logging.error(f'An error occurred in database update : {e}')
         logging.error(f'Error updating database : {e}')
@@ -72,7 +71,8 @@ async def start_program(sid):
 def main():
     try:
         print("Starting server...")
-        uvicorn.run('main:app', host="0.0.0.0", port=8000, reload=True)
+        uvicorn.run('main:app', host="127.0.0.1", port=8000, reload=True)
+        # uvicorn.run('main:app', host="0.0.0.0", port=8000, reload=True)
     except Exception as e:
         logging.error(f'An error occurred in server start : {e}')
         print(f"An error occurred: {e}")
