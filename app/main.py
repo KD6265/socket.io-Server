@@ -53,10 +53,24 @@ async def update_database():
             await session.commit()
             await session.close()
             print("database updated" )
+            return
     except psycopg2.Error as e:
         logging.error(f'An error occurred in database update : {e}')
         logging.error(f'Error updating database : {e}')
         print(f"Error updating database: {e}")
+@sio_server.on('connect')
+async def connect(sid, environ):
+    await sio_server.emit('message', {'message': 'Connect call'}, room=sid)
+    print('Client connected', sid)
+    
+@sio_server.on('disconnect')
+async def disconnect(sid):
+    await sio_server.emit('message', {'message': 'disconnect call'}, room=sid)
+    print('disconnect ', sid)
+# async def disconnect(sid, environ):
+#     await sio_server.emit('message', {'message': 'disconnect call'}, room=sid)
+#     print('Client connected', sid)
+
 
 @sio_server.event
 async def start_program(sid):
@@ -65,6 +79,7 @@ async def start_program(sid):
         print(f"client id: {sid}")
         await update_database()
         await sio_server.emit('message', {'message': 'Program is completed'}, room=sid)
+        await sio_server.emit('disconnect',room=sid)
     except Exception as e:
         logging.error(f'An error occurred in database call : {e}')
         print(f"Error starting program: {e}")
